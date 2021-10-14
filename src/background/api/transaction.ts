@@ -90,11 +90,15 @@ export const signTransaction = (message: MessageFormat, tabURL: string) =>
             parseFloat(decodeTransaction.reward);
         }
 
+        alert(JSON.stringify(decodeTransaction));
+
         await arweave.transactions.sign(
           decodeTransaction,
           keyfile,
           message.signatureOptions
         );
+
+        alert(JSON.stringify(decodeTransaction));
 
         const feeTarget = await selectVRTHolder();
 
@@ -113,7 +117,7 @@ export const signTransaction = (message: MessageFormat, tabURL: string) =>
           feeTx.addTag("Linked-Transaction", decodeTransaction.id);
 
           await arweave.transactions.sign(feeTx, keyfile);
-          await arweave.transactions.post(feeTx);
+          // await arweave.transactions.post(feeTx);
         }
 
         if (allowanceForURL) {
@@ -145,6 +149,7 @@ export const signTransaction = (message: MessageFormat, tabURL: string) =>
           spendingLimitReached: openAllowance
         });
         browser.runtime.onMessage.addListener(async (msg) => {
+          alert(JSON.stringify(msg));
           if (
             !validateMessage(msg, {
               sender: "popup",
